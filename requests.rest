@@ -1,0 +1,34 @@
+POST http://localhost:5000/test
+Content-Type: application/json
+
+{
+    "name": "blablabla"
+}
+
+###
+POST http://localhost:5000/product
+Content-Type: application/json
+
+{
+    "name": "This is name 2",
+    "description": "this is desc 22",
+    "price": "1500",
+    "qty": "50"
+}
+
+### Get all products
+GET  http://localhost:5000/product
+
+###
+GET  http://localhost:5000/product/2
+
+###
+PUT http://localhost:5000/product/2
+Content-Type: application/json
+
+{
+    "name": "This is name 2",
+    "description": "this is desc 22 update",
+    "price": "1500",
+    "qty": "50"
+}
