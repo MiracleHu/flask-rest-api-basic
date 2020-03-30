@@ -16,7 +16,9 @@ $ pipenv shell
 
 # Install dependencies in Pipfile
 # if there is no Pipfile, you can install manully :
-# pipenv install flask flask-sqlalchemy flask-marshmallow marshmallow-sqlalchemy
+# $ pipenv install flask flask-sqlalchemy flask-marshmallow marshmallow-sqlalchemy
+# if your project dependencies file is requirements.txt, you can use this :
+# $ pipenv install -r /path/to/your/requirements.txt
 $ pipenv install
 
 # Create DB
