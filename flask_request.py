@@ -12,10 +12,12 @@ def query_example():
               <h1>The framework value is: {}</h1>
               <h1>The website value is: {}'''.format(language, framework, website)
 
-##Form Data Next we have form data. Form data comes from a form that has been sent as a POST request to a route. 
-# So instead of seeing the data in the URL (except for cases when the form is submitted with a GET request), 
-# the form data will be passed to the app behind the scenes. 
-# Even though you can't easily see the form data that gets passed, your app can still read it.
+'''
+Form Data Next we have form data. Form data comes from a form that has been sent as a POST request to a route. 
+So instead of seeing the data in the URL (except for cases when the form is submitted with a GET request), 
+the form data will be passed to the app behind the scenes. 
+Even though you can't easily see the form data that gets passed, your app can still read it.
+'''
 
 # To demonstrate this, modify the form-example route to accept both GET and POST requests and to return a simple form.
 @app.route('/form-example', methods=['GET', 'POST']) #allow both GET and POST requests
@@ -33,26 +35,30 @@ def form_example():
                   <input type="submit" value="Submit"><br>
               </form>'''
 
-# POST body example
-# {
-#     "language" : "Python",
-#     "framework" : "Flask",
-#     "website" : "Scotch",
-#     "version_info" : {
-#         "python" : 3.4,
-#         "flask" : 0.12
-#     },
-#     "examples" : ["query", "form", "json"],
-#     "boolean_test" : true
-# }
+'''
+POST body example
+{
+    "language" : "Python",
+    "framework" : "Flask",
+    "website" : "Scotch",
+    "version_info" : {
+        "python" : 3.4,
+        "flask" : 0.12
+    },
+    "examples" : ["query", "form", "json"],
+    "boolean_test" : true
+}
+'''
 
-# If the JSON object sent with the request doesn't have a key that is accessed in your view function, 
-# then the request will fail. If you don't want it to fail when a key doesn't exist, 
-# you'll have to check if the key exists before trying to access it. Here's an example:
+'''
+If the JSON object sent with the request doesn't have a key that is accessed in your view function, 
+then the request will fail. If you don't want it to fail when a key doesn't exist, 
+you'll have to check if the key exists before trying to access it. Here's an example:
 
-# language = None
-# if 'language' in req_data:
-#     language = req_data['language']
+language = None
+if 'language' in req_data:
+    language = req_data['language']
+'''
 
 @app.route('/json-example', methods=['POST']) #GET requests will be blocked
 def json_example():
