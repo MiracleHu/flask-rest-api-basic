@@ -30,6 +30,9 @@ $ python
 
 # Run Server (http://localhst:5000)
 python app.py
+
+# If you want to play aroud flask, see flask_request.py
+python flask_request.py
 ```
 
 ## Endpoints
