@@ -2,6 +2,7 @@ from flask import Flask, request #import main Flask class and request object
 
 app = Flask(__name__) #create the Flask app
 
+# http://localhost:5000/query-example?language=en&framework=&website=
 @app.route('/query-example')
 def query_example():
     language = request.args.get('language') #if key doesn't exist, returns None
