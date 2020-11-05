@@ -92,32 +92,6 @@ def test_example():
     # assign everything from the JSON object into a variable using request.get_json()
     return 'OK'
 
-@app.route('/api/v1/fabric/upload/hubs', methods=['PUT']) #GET requests will be blocked
-def test_upload():
-    print('request.files:', request.files)
-    # # ImmutableMultiDict([('', <FileStorage: 'testzip.zip' ('application/zip')>)]
-    # # Attention: '' in ImmutableMultiDict is the file name in zip file
-    file = request.files['']
-    if not file:
-        print('No file part')
-    print('file name:', file.filename)
-    print('is is_zipfile:', is_zipfile(file))
-    res = ''
-    with ZipFile(file, 'r') as req_zip:
-        # # printing all the contents of the zip file
-        req_zip.printdir()
-        with req_zip.open('hub/hub2/hub_output.json') as req_file:
-            res = req_file.read()
-            # print(res)
-            parsed = json.loads(res)
-            print('network_id:', parsed['network_id'])
-            print('parsed:', parsed)
-        # # extracting all the files
-        # print('Extracting all the files now...')
-        # req_zip.extractall()
-        # print('Done!')
-    return Response(response=json.dumps({"status": "success", "json": parsed}), status=200, mimetype='application/json')
-
 # def allowed_file(filename):
 #     return '.' in filename and \
 #            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -151,6 +125,33 @@ def test_upload():
 #       <input type=submit value=Upload>
 #     </form>
 #     '''
+
+
+@app.route('/api/v1/fabric/upload/hubs', methods=['PUT']) #GET requests will be blocked
+def test_upload():
+    print('request.files:', request.files)
+    # # ImmutableMultiDict([('', <FileStorage: 'testzip.zip' ('application/zip')>)]
+    # # Attention: '' in ImmutableMultiDict is the file name in zip file
+    file = request.files['']
+    if not file:
+        print('No file part')
+    print('file name:', file.filename)
+    print('is is_zipfile:', is_zipfile(file))
+    res = ''
+    with ZipFile(file, 'r') as req_zip:
+        # # printing all the contents of the zip file
+        req_zip.printdir()
+        with req_zip.open('hub/hub2/hub_output.json') as req_file:
+            res = req_file.read()
+            # print(res)
+            parsed = json.loads(res)
+            print('network_id:', parsed['network_id'])
+            print('parsed:', parsed)
+        # # extracting all the files
+        # print('Extracting all the files now...')
+        # req_zip.extractall()
+        # print('Done!')
+    return Response(response=json.dumps({"status": "success", "json": parsed}), status=200, mimetype='application/json')
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000) #run app in debug mode on port 5000
