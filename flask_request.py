@@ -1,6 +1,14 @@
-from flask import Flask, request #import main Flask class and request object
+import os
+from flask import Flask, flash, request, redirect, url_for, Response
+from werkzeug.utils import secure_filename
+from zipfile import ZipFile, is_zipfile
+import json
 
-app = Flask(__name__) #create the Flask app
+UPLOAD_FOLDER = '/Users/huh/Desktop'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # http://localhost:5000/query-example?language=en&framework=&website=
 @app.route('/query-example')
@@ -78,6 +86,71 @@ def json_example():
            The Python version is: {}
            The item at index 0 in the example list is: {}
            The boolean value is: {}'''.format(language, framework, python_version, example, boolean_test)
+
+@app.route('/test', methods=['GET']) #GET requests will be blocked
+def test_example():
+    # assign everything from the JSON object into a variable using request.get_json()
+    return 'OK'
+
+@app.route('/api/v1/fabric/upload/hubs', methods=['PUT']) #GET requests will be blocked
+def test_upload():
+    print('request.files:', request.files)
+    # # ImmutableMultiDict([('', <FileStorage: 'testzip.zip' ('application/zip')>)]
+    # # Attention: '' in ImmutableMultiDict is the file name in zip file
+    file = request.files['']
+    if not file:
+        print('No file part')
+    print('file name:', file.filename)
+    print('is is_zipfile:', is_zipfile(file))
+    res = ''
+    with ZipFile(file, 'r') as req_zip:
+        # # printing all the contents of the zip file
+        req_zip.printdir()
+        with req_zip.open('hub/hub2/hub_output.json') as req_file:
+            res = req_file.read()
+            # print(res)
+            parsed = json.loads(res)
+            print('network_id:', parsed['network_id'])
+            print('parsed:', parsed)
+        # # extracting all the files
+        # print('Extracting all the files now...')
+        # req_zip.extractall()
+        # print('Done!')
+    return Response(response=json.dumps({"status": "success", "json": parsed}), status=200, mimetype='application/json')
+
+# def allowed_file(filename):
+#     return '.' in filename and \
+#            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# @app.route('/api/v1/fabric/upload', methods=['GET', 'POST'])
+# def upload_file():
+#     if request.method == 'POST':
+#         # check if the post request has the file part
+#         print('request.files', request.files)
+#         if 'file' not in request.files:
+#             flash('No file part')
+#             return redirect(request.url)
+#         file = request.files['file']
+#         print('file:---->', file)
+#         # if user does not select file, browser also
+#         # submit an empty part without filename
+#         # if file.filename == '':
+#         #     flash('No selected file')
+#         #     return redirect(request.url)
+#         # if file and allowed_file(file.filename):
+#         #     filename = secure_filename(file.filename)
+#         #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+#         #     return redirect(url_for('uploaded_file',
+#         #                             filename=filename))
+#     return '''
+#     <!doctype html>
+#     <title>Upload new File</title>
+#     <h1>Upload new File</h1>
+#     <form method=post enctype=multipart/form-data>
+#       <input type=file name=file>
+#       <input type=submit value=Upload>
+#     </form>
+#     '''
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000) #run app in debug mode on port 5000
