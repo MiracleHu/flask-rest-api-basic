@@ -141,12 +141,15 @@ def test_upload():
     with ZipFile(file, 'r') as req_zip:
         # # printing all the contents of the zip file
         req_zip.printdir()
+        print('req_zip.getinfo("hub/"):', req_zip.getinfo('hub/'))
+        print('req_zip.namelist():', req_zip.namelist())
+        
         with req_zip.open('hub/hub2/hub_output.json') as req_file:
             res = req_file.read()
             # print(res)
             parsed = json.loads(res)
             print('network_id:', parsed['network_id'])
-            print('parsed:', parsed)
+            # print('parsed:', parsed)
         # # extracting all the files
         # print('Extracting all the files now...')
         # req_zip.extractall()
